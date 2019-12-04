@@ -38,7 +38,7 @@ router.get("/:id", (req, res) => {
 // GET request to /api/posts/:id/comments
 
 router.get("/:id/comments", (req, res) => {
-  db.findCommentById(req.params.id)
+  db.findPostComments(req.params.id)
     .then(commit => {
       if (commit.length > 0) res.status(200).json(commit);
       else
@@ -138,12 +138,10 @@ router.put("/:id", (req, res) => {
           db.update(req.params.id, req.body)
             .then(added => res.status(200).json(req.body))
             .catch(error => {
-              res
-                .status(500)
-                .json({
-                  error:
-                    "There was an error while saving the comment to the data base"
-                });
+              res.status(500).json({
+                error:
+                  "There was an error while saving the comment to the data base"
+              });
             });
         } else {
           res.status(400).json({
